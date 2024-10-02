@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 12:37:15 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/04/04 16:29:22 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:23:26 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	get_line_num(char *path)
 
 void	update_map(t_pointers *ptr, int i)
 {
-	ptr->map.matrix[i] = NULL;
-	ptr->map.tex.size = 64;
-	ptr->map.moves_count = 0;
+	ptr->map[ptr->map_index].matrix[i] = NULL;
+	ptr->map[ptr->map_index].tex.size = 64;
+	ptr->map[ptr->map_index].moves_count = 0;
 }
 
 void	set_map(t_pointers *ptr, char *map_path)
@@ -45,22 +45,22 @@ void	set_map(t_pointers *ptr, char *map_path)
 	int	i;
 	int	fd;
 
-	ptr->map.line_num = get_line_num(map_path);
-	if (ptr->map.line_num <= 0)
+	ptr->map[ptr->map_index].line_num = get_line_num(map_path);
+	if (ptr->map[ptr->map_index].line_num <= 0)
 		error_handling(ptr, "Errore nell'apertura del file");
 	fd = open(map_path, O_RDONLY);
 	if (fd == -1)
 		error_handling(ptr, "Errore nell'apertura del file");
-	ptr->map.matrix = malloc(sizeof(char *) * (ptr->map.line_num + 1));
-	ptr->map.matrix[0] = get_next_line(fd);
-	ptr->map.line_size = ft_strlen(ptr->map.matrix[0]);
+	ptr->map[ptr->map_index].matrix = malloc(sizeof(char *) * (ptr->map[ptr->map_index].line_num + 1));
+	ptr->map[ptr->map_index].matrix[0] = get_next_line(fd);
+	ptr->map[ptr->map_index].line_size = ft_strlen(ptr->map[ptr->map_index].matrix[0]);
 	i = 0;
-	while (++i < ptr->map.line_num)
+	while (++i < ptr->map[ptr->map_index].line_num)
 	{
-		ptr->map.matrix[i] = get_next_line(fd);
-		if (ft_strlen((ptr->map.matrix[i])) != ptr->map.line_size)
+		ptr->map[ptr->map_index].matrix[i] = get_next_line(fd);
+		if (ft_strlen((ptr->map[ptr->map_index].matrix[i])) != ptr->map[ptr->map_index].line_size)
 		{
-			ptr->map.line_num = i + 1;
+			ptr->map[ptr->map_index].line_num = i + 1;
 			error_handling(ptr, "The map must be rectangular");
 		}
 	}
@@ -93,13 +93,13 @@ void	check_map_validation(t_pointers *ptr)
 	my_exit = 0;
 	collectable = 0;
 	i = -1;
-	while (++i < ptr->map.line_num)
+	while (++i < ptr->map[ptr->map_index].line_num)
 	{
 		j = -1;
-		while (++j < ptr->map.line_size)
+		while (++j < ptr->map[ptr->map_index].line_size)
 		{
 			check_perimeter(ptr, i, j);
-			if (!has_correct_value(ptr->map.matrix[i][j], \
+			if (!has_correct_value(ptr->map[ptr->map_index].matrix[i][j], \
 			&player, &my_exit, &collectable))
 				error_handling(ptr, \
 				"The only characters allow are 1, 0, P, C, E");

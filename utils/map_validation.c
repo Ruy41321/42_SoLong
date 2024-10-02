@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:39:15 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/02/28 14:07:28 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/10/02 21:59:06 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	check_perimeter(t_pointers *ptr, int i, int j)
 {
-	if (ptr->map.matrix[i][j] != '1' \
-	&& ((i == 0 || i + 1 == ptr->map.line_num) \
-	|| j == 0 || j + 1 == ptr->map.line_size))
+	if (ptr->map[ptr->map_index].matrix[i][j] != '1' \
+	&& ((i == 0 || i + 1 == ptr->map[ptr->map_index].line_num) \
+	|| j == 0 || j + 1 == ptr->map[ptr->map_index].line_size))
 		error_handling(ptr, "Missing correct perimiter");
 }
 
@@ -67,12 +67,12 @@ void	check_path(t_pointers *ptr, int p, int e, int c)
 
 	if (!check_elementes(p, e, c))
 		error_handling(ptr, "Must have: 1 exit and position, 1+ collect");
-	ptr->map.collect_count = c;
-	get_object_position(ptr->map, 'P', &i, &j);
-	if (!has_path_to_exit(ptr->map, i, j, get_visited(ptr->map)) || \
-	!has_path_to_collectables(&(ptr->map), i, j, get_visited(ptr->map)))
+	ptr->map[ptr->map_index].collect_count = c;
+	get_object_position(ptr->map[ptr->map_index], 'P', &i, &j);
+	if (!has_path_to_exit(ptr->map[ptr->map_index], i, j, get_visited(ptr->map[ptr->map_index])) || \
+	!has_path_to_collectables(&(ptr->map[ptr->map_index]), i, j, get_visited(ptr->map[ptr->map_index])))
 		error_handling(ptr, "There is no available path to win");
-	ptr->map.collect_count = c;
-	ptr->map.player_x = j;
-	ptr->map.player_y = i;
+	ptr->map[ptr->map_index].collect_count = c;
+	ptr->map[ptr->map_index].player_x = j;
+	ptr->map[ptr->map_index].player_y = i;
 }

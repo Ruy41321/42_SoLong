@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 13:04:04 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/02/29 15:30:41 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/10/02 22:08:21 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	move(t_pointers *ptr, int direction)
 	int	new_x;
 	int	new_y;
 
-	new_x = ptr->map.player_x;
-	new_y = ptr->map.player_y;
+	new_x = ptr->map[ptr->map_index].player_x;
+	new_y = ptr->map[ptr->map_index].player_y;
 	if (direction == W)
 		new_y -= 1;
 	if (direction == A)
@@ -29,11 +29,11 @@ int	move(t_pointers *ptr, int direction)
 		new_y += 1;
 	if (direction == D)
 		new_x += 1;
-	if (ptr->map.matrix[new_y][new_x] == '1')
+	if (ptr->map[ptr->map_index].matrix[new_y][new_x] == '1')
 		return (0);
 	system("clear");
-	ft_printf("Moves count: %d\n", ptr->map.moves_count++);
-	if (move_player(&ptr->map, new_x, new_y))
+	ft_printf("Moves count: %d\n", ptr->map[ptr->map_index].moves_count++);
+	if (move_player(&ptr->map[ptr->map_index], new_x, new_y))
 		return (1);
 	load_map(ptr);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lpennisi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/17 14:49:58 by lpennisi          #+#    #+#             */
-/*   Updated: 2024/04/04 14:50:01 by lpennisi         ###   ########.fr       */
+/*   Updated: 2024/10/02 23:45:21 by lpennisi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ typedef struct s_pointers
 {
 	void		*mlx;
 	void		*win;
-	t_map		map;
+	t_map		*map;
+	int			map_index;
+	int			map_num;
+	int			map_init;
 }	t_pointers;
 
 # define WALL_PATH "./textures/myAssets/64/wall.xpm"
@@ -68,7 +71,7 @@ typedef struct s_pointers
 void	error_handling(t_pointers *ptr, char *msg);
 void	set_hook_and_loop(t_pointers *ptr);
 void	init_pointers(t_pointers *ptr);
-int		on_destroy(t_pointers *ptr);
+int		on_destroy(t_pointers *ptr, int esc_pressed);
 void	free_matrix(void **matrix, int size);
 int		on_keypress(int keysym, t_pointers *ptr);
 void	load_map(t_pointers *ptr);
@@ -81,5 +84,6 @@ void	set_map(t_pointers *ptr, char *map_path);
 void	check_map_validation(t_pointers *ptr);
 int		get_object_position(t_map map, char object, int *i, int *j);
 int		move(t_pointers *ptr, int direction);
+void	start_map(t_pointers *ptr);
 
 #endif
